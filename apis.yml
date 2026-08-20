@@ -28,6 +28,13 @@ position: Consuming
 specificationVersion: '0.23'
 kind: government
 tags:
+  - Federal-Government
+  - Defense
+  - Department of Defense
+  - Audit
+  - Contract Audit
+  - Financial
+tags_raw:
   - Federal Government
   - Defense
   - Department of Defense
