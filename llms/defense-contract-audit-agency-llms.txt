@@ -1,0 +1,79 @@
+# Defense Contract Audit Agency (DCAA)
+
+> The Defense Contract Audit Agency, under the authority, direction and control of the
+> Under Secretary of Defense (Comptroller), provides contract audit and financial advisory
+> services to the Department of Defense and other federal agencies responsible for
+> acquisition and contract administration. DCAA runs no developer program and publishes no
+> API documentation, no OpenAPI, no SDK and no /llms.txt. It does operate one public,
+> unauthenticated JSON API — the Field Audit Office Branch Locator — which is documented
+> here from live probes rather than from anything DCAA published.
+
+Generated: 2026-09-07
+Method: generated (no /llms.txt is served on any DCAA host; fao.dcaa.mil/llms.txt and
+csp.dcaa.mil/llms.txt both return 404, www.dcaa.mil returns 403 to non-browser clients).
+
+## Public API
+
+- [Field Audit Office Branch Locator](https://fao.dcaa.mil/): public Angular application
+  for finding the DCAA office cognizant over a contractor.
+- Base URL: `https://fao.dcaa.mil/api` — anonymous, read-only, no key, no rate-limit
+  headers, no published specification.
+- `GET /api/PublicBranch/search?searchCriteria={value}&searchType={0|1|2}` — resolve a
+  field audit office. searchType 0 = CAGE code, 1 = SAM.gov UEI, 2 = ZIP code. Returns
+  `{title, searchForm, regionInfo, branchInfo, statusCode, notFoundMessage}`; branches
+  carry name, phone, email and address. HTTP 404 with `noBranchesFound: true` when nothing
+  matches; HTTP 400 with `branchSearchError: true` when the criteria fail the format check.
+- `GET /api/angularconfiguration/get-cage-code-regex` — the CAGE code format the API accepts.
+- `GET /api/angularconfiguration/get-uei-regex` — the SAM.gov UEI format the API accepts.
+- `GET /api/angularconfiguration/get-zip-code-regex` — the ZIP code format the API accepts.
+- `GET /api/angularconfiguration/get-info-box-message` — the current service notice.
+- `GET /api/angularconfiguration/get-is-info-box-enabled` — whether that notice is displayed.
+
+Malformed input returns RFC 9457 `application/problem+json` with a W3C trace-context
+`traceId`. Validate input against the three regex endpoints before searching.
+
+DCAA announced in-band that this host moves to `https://locator.dcaa.mil` on 2025-12-16.
+As of 2026-09-07 that hostname does not resolve and `fao.dcaa.mil` is still authoritative.
+
+## Gated surface
+
+- [Contractor Submission Portal](https://csp.dcaa.mil/) — where contractors file, update or
+  withdraw a certified incurred cost submission. Sign-in is OpenID Connect
+  (authorization code + PKCE S256) against DoD PIEE, `client_id=csp`. No public API, no
+  published contract.
+
+## Website and guidance
+
+- [DCAA](https://www.dcaa.mil) — agency website. Answers HTTP 403 to non-browser clients at
+  its Akamai edge; a normal browser reaches it.
+- [Audit guidance and publications](https://www.dcaa.mil/Guidance/)
+- [Contract Audit Manual (CAM)](https://www.dcaa.mil/Guidance/CAM-Contract-Audit-Manual/)
+- [Checklists and tools](https://www.dcaa.mil/ChecklistsAndTools/)
+- [About DCAA services](https://www.dcaa.mil/About-DCAA/Services/)
+- [Agency news](https://www.dcaa.mil/Agency-News/)
+- [Contact](https://www.dcaa.mil/Contact/) · [Contact form](https://www.dcaa.mil/Contact/Contact-Form/)
+- [Freedom of Information Act](https://www.dcaa.mil/Freedom-of-Information-Act/)
+- [Privacy and security](https://www.dcaa.mil/Privacy-and-Security/)
+- [Careers](https://www.dcaa.mil/Careers/)
+
+## What DCAA does not publish
+
+No OpenAPI, no AsyncAPI, no GraphQL, no gRPC/protobuf, no WSDL, no MCP server, no A2A agent
+card, no SDK or CLI, no changelog, no status page, no deprecation policy, no sandbox, no
+security.txt, no trust centre, no pricing and no rate-limit policy. Every one of these was
+probed on 2026-09-07 and recorded as absent.
+
+## Artifacts in this repository
+
+- apis.yml — the catalog record
+- authentication/defense-contract-audit-agency-authentication.yml
+- scopes/defense-contract-audit-agency-scopes.yml
+- conventions/defense-contract-audit-agency-conventions.yml
+- errors/defense-contract-audit-agency-problem-types.yml
+- conformance/defense-contract-audit-agency-conformance.yml
+- lifecycle/defense-contract-audit-agency-lifecycle.yml
+- well-known/defense-contract-audit-agency-well-known.yml
+- rate-limits/defense-contract-audit-agency-rate-limits.yml
+- plans/defense-contract-audit-agency-plans-pricing.yml
+- security/defense-contract-audit-agency-domain-security.yml
+- mcp/defense-contract-audit-agency-mcp.yml (candidate; no server exists)

@@ -3,8 +3,13 @@ specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
 provider: Defense Contract Audit Agency
 providerId: defense-contract-audit-agency
+generated: '2026-09-07'
+method: probed
+source: >-
+  live responses from https://fao.dcaa.mil/api, observed 2026-09-07, plus a search of
+  https://www.dcaa.mil/ for any published usage policy.
 created: '2026-05-22'
-modified: '2026-05-22'
+modified: '2026-09-07'
 tags:
 - Federal Government
 - Defense
@@ -13,46 +18,31 @@ tags:
 - Contract Audit
 - Financial
 - Rate Limiting
-- Quotas
-- Throttling
-description: Scaffolded rate limit definitions for the Defense Contract Audit Agency API surface. Captures per-tier quotas,
-  burst behavior, response signaling, and recovery semantics. Defaults are scaffold values to be replaced with published provider
-  limits.
-headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
+description: >-
+  DCAA publishes no rate limits, and its public Branch Locator API emits no rate-limit
+  signal on the wire. Successful responses carry only Content-Type, Date,
+  Strict-Transport-Security and Transfer-Encoding — no X-RateLimit-*, no RateLimit-*, no
+  Retry-After, and no 429 was observed across the probes run for this pass. An agent has
+  no runtime budget signal to read here and should self-throttle conservatively against a
+  government host.
+limit_count: 0
+headers: {}
+observed_response_headers:
+- Content-Type
+- Date
+- Strict-Transport-Security
+- Transfer-Encoding
 responseCodes:
-  throttled: 429
-  quotaExceeded: 429
-  serviceUnavailable: 503
-limits:
-- tier: free
-  name: Free Tier Default
-  scope: api-key
-  metric: requests_per_minute
-  limit: 10
-  burst: 20
-  timeFrame: minute
-  applies:
-  - https://defense-contract-audit-agency.example/api
-  description: Default per-token request rate for the free tier. Bursts above the limit return HTTP 429 with Retry-After.
-- tier: pro
-  name: Pro Tier Default
-  scope: api-key
-  metric: requests_per_minute
-  limit: 120
-  burst: 240
-  timeFrame: minute
-  applies:
-  - https://defense-contract-audit-agency.example/api
-  description: Higher rate envelope for paid plans; reconcile against published commercial terms.
-recoveryStrategies:
-- name: Exponential Backoff
-  description: Wait Retry-After seconds (or back off exponentially up to 60s) before retrying.
-- name: Queue and Retry
-  description: Submit bulk work in batches under the burst envelope.
+  throttled: null
+  quotaExceeded: null
+limits: []
 notes:
-- Replace scaffold values with the provider's published rate limit policy.
+- >-
+  This file previously carried a scaffold with invented free/pro tiers, invented
+  per-minute limits and burst values, an invented header set and an invented domain
+  (defense-contract-audit-agency.example). None of it was published by DCAA; it has been
+  removed and replaced with the measured result.
+- >-
+  Absence of a limit is not a licence to hammer the host. www.dcaa.mil already answers 403
+  to non-browser clients at the Akamai edge, which is the agency's de facto automated-access
+  posture.

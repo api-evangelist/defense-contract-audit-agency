@@ -1,12 +1,27 @@
-generated: '2026-07-11'
+generated: '2026-09-07'
 method: probed
 source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
 hosts:
 - host: www.dcaa.mil
   https: true
   tls_version: TLSv1.3
-  cert_expires: Aug 17 15:25:38 2026 GMT
-  hsts: null
+  cert_expires: Nov  2 19:35:49 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+- host: fao.dcaa.mil
+  https: true
+  tls_version: TLSv1.2
+  cert_expires: Dec 11 17:19:12 2026 GMT
+  hsts: true
+  hsts_max_age: 31557600
+  hsts_include_subdomains: true
+- host: csp.dcaa.mil
+  https: true
+  tls_version: TLSv1.2
+  cert_expires: Dec 11 17:19:12 2026 GMT
+  hsts: true
+  hsts_max_age: 31557600
+  hsts_include_subdomains: true
 domains:
 - domain: dcaa.mil
   dnssec: true
@@ -14,3 +29,9 @@ domains:
   spf: true
   dmarc: true
   dmarc_policy: reject
+notes:
+- >-
+  HSTS was re-read by hand on 2026-09-07 with a browser User-Agent because the mechanical
+  probe recorded null on all three hosts. All three do send Strict-Transport-Security on
+  GET / : www.dcaa.mil max-age=31536000, fao.dcaa.mil and csp.dcaa.mil
+  max-age=31557600; includeSubDomains.

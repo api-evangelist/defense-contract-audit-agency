@@ -1,0 +1,28 @@
+generated: '2026-09-07'
+method: probed
+source: >-
+  https://csp.dcaa.mil/ sign-in redirect observed 2026-09-07 — the scope set is read from
+  the live authorization request DCAA's own client builds, not from any published document.
+note: >-
+  DCAA publishes no scope or permission reference. The only OAuth scopes observable
+  anywhere on a DCAA host are the two standard OpenID Connect scopes the Contractor
+  Submission Portal requests from DoD PIEE. The public Branch Locator API has no OAuth
+  surface at all. This is a two-scope sign-in, not a developer authorization model.
+docs: null
+schemes:
+  - name: piee-oidc
+    source: probed https://csp.dcaa.mil/ (302 to PIEE authorize endpoint)
+    flows:
+      - flow: authorizationCode
+        authorizationUrl: https://piee.eb.mil/portal/oauth2/authorize
+        tokenUrl: null
+        pkce: S256
+scopes:
+  - scope: openid
+    description: Standard OpenID Connect scope requesting an ID token for the signed-in DoD PIEE user.
+    flows: [authorizationCode]
+    sources: [probed https://csp.dcaa.mil/]
+  - scope: profile
+    description: Standard OpenID Connect scope requesting the user's basic profile claims.
+    flows: [authorizationCode]
+    sources: [probed https://csp.dcaa.mil/]

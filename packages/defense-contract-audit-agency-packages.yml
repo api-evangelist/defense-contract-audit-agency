@@ -1,0 +1,12 @@
+generated: '2026-09-07'
+method: searched
+source: >-
+  npm (registry.npmjs.org), PyPI, RubyGems, crates.io, NuGet, Maven Central, pkg.go.dev and
+  Packagist searched 2026-09-07 for a first-party DCAA client library; GitHub org search for
+  "dcaa" returned only unrelated organisations (an Indonesian aviation body, several
+  "DCaaS" vendors). None is the Defense Contract Audit Agency.
+note: >-
+  DCAA ships no SDK, no client library and no CLI. It has no GitHub organisation and no
+  developer program. No SDKs pointer is emitted, because there is no SDK.
+package_count: 0
+packages: []

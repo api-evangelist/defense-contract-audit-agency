@@ -3,39 +3,46 @@ name: Defense Contract Audit Agency
 url: >-
   https://raw.githubusercontent.com/api-evangelist/defense-contract-audit-agency/refs/heads/main/apis.yml
 description: >-
-  The Defense Contract Audit Agency (DCAA), under the authority, direction,
-  and control of the Under Secretary of Defense (Comptroller), provides audit
-  and financial advisory services to Department of Defense and other federal
-  entities responsible for acquisition and contract administration. DCAA
-  publishes guidance, audit programs, and reports through its website but
-  does not currently expose a public developer API.
+  The Defense Contract Audit Agency (DCAA), under the authority, direction, and control of
+  the Under Secretary of Defense (Comptroller), provides audit and financial advisory
+  services to the Department of Defense and other federal entities responsible for
+  acquisition and contract administration. DCAA runs no developer program: no API
+  documentation, no OpenAPI, no SDK, no MCP server, no agent card and no /.well-known
+  surface exist on any host it operates. It does serve one public, unauthenticated and
+  undocumented JSON API — the Field Audit Office Branch Locator at
+  https://fao.dcaa.mil/api — which resolves the cognizant DCAA audit office for a
+  contractor by CAGE code, SAM.gov UEI or ZIP code and returns RFC 9457 problem details on
+  validation failure. A second, gated surface, the Contractor Submission Portal at
+  https://csp.dcaa.mil, takes certified incurred cost submissions behind an OpenID Connect
+  sign-in federated to DoD PIEE.
 type: Index
 deliveryModel:
   model: unknown
   open_source: false
   commercial: false
-  callable_host: false
-  label: Delivery model not determined — needs a product licence on record
-  confidence: low
-  source:
-  - none
-  generated: '2026-08-28'
-  method: derived
-accessModel:
-  pricing: free
-  onboarding: unknown
-  trial: false
-  try_now: false
-  public: false
-  label: Free
+  callable_host: true
+  label: Public unauthenticated JSON endpoint on a first-party host; no product licence on record
   confidence: medium
   source:
+  - probe
+  generated: '2026-09-07'
+  method: probed
+accessModel:
+  pricing: free
+  onboarding: none
+  trial: false
+  try_now: true
+  public: true
+  label: Free and anonymous — no sign-up, no key, no plans
+  confidence: high
+  source:
+  - probe
   - plans
-  generated: '2026-07-22'
-  method: derived
+  generated: '2026-09-07'
+  method: probed
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/defense-contract-audit-agency.png
 access: 3rd-Party
-position: Consuming
+position: Producing
 specificationVersion: '0.23'
 kind: government
 tags:
@@ -45,6 +52,10 @@ tags:
   - Audit
   - Contract Audit
   - Financial
+  - Government Contracting
+  - CAGE Code
+  - Unique Entity Identifier
+  - Locator
 tags_raw:
   - Federal Government
   - Defense
@@ -52,12 +63,109 @@ tags_raw:
   - Audit
   - Contract Audit
   - Financial
+  - Government Contracting
+  - CAGE Code
+  - Unique Entity Identifier
+  - Locator
 created: '2024-12-03'
-modified: '2026-04-28'
-apis: []
+modified: '2026-09-07'
+apis:
+  - aid: defense-contract-audit-agency:branch-locator
+    name: DCAA Field Audit Office Branch Locator API
+    description: >-
+      The public JSON backend of DCAA's Field Audit Office Branch Locator. It resolves the
+      DCAA field audit office cognizant over a contractor from a CAGE code (searchType 0),
+      a SAM.gov Unique Entity Identifier (searchType 1) or a US ZIP code (searchType 2),
+      returning the branch name, phone, email and address along with region information.
+      Three companion endpoints publish the regular expressions the API validates each
+      identifier against, and two more publish the current service notice. Everything is
+      anonymous, read-only and free. DCAA publishes NO specification, NO documentation and
+      NO terms for it — this entry was established by live probing on 2026-09-07 (six
+      operations observed returning HTTP 200/400/404), which is why no OpenAPI pointer is
+      wired: none exists, and authoring one would credit DCAA with a contract it has never
+      published. Validation failures return RFC 9457 application/problem+json with a W3C
+      trace-context traceId.
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/defense-contract-audit-agency.png
+    humanURL: https://fao.dcaa.mil/
+    baseURL: https://fao.dcaa.mil/api
+    tags:
+      - Locator
+      - Government Contracting
+      - CAGE Code
+      - Unique Entity Identifier
+      - Undocumented
+    tags_raw:
+      - Locator
+      - Government Contracting
+      - CAGE Code
+      - SAM.gov UEI
+      - Undocumented
+    properties:
+      - type: Authentication
+        url: authentication/defense-contract-audit-agency-authentication.yml
+      - type: ErrorCatalog
+        url: errors/defense-contract-audit-agency-problem-types.yml
+      - type: Conventions
+        url: conventions/defense-contract-audit-agency-conventions.yml
+      - type: RateLimits
+        url: rate-limits/defense-contract-audit-agency-rate-limits.yml
+      - type: Website
+        url: https://fao.dcaa.mil/
+  - aid: defense-contract-audit-agency:contractor-submission-portal
+    name: DCAA Contractor Submission Portal (CSP)
+    description: >-
+      The portal a defense contractor uses to file, update or withdraw a certified incurred
+      cost submission with DCAA. It is a DCAA-operated application on a DCAA host, but every
+      path redirects unauthenticated callers to the DoD Procurement Integrated Enterprise
+      Environment (PIEE) authorization endpoint — OAuth 2.0 authorization code with PKCE
+      (S256), client_id csp, scopes openid and profile. Access requires a DoD PIEE account,
+      not a developer credential. No API, no specification and no machine-readable contract
+      are published for it; it is recorded here because it is the agency's only write
+      surface and its authentication model is observable. Listed as gated, not as a
+      callable API.
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/defense-contract-audit-agency.png
+    humanURL: https://csp.dcaa.mil/
+    baseURL: https://csp.dcaa.mil
+    tags:
+      - Gated
+      - Authentication
+      - OpenID Connect
+      - Incurred Cost
+    tags_raw:
+      - Gated
+      - Authentication
+      - OpenID Connect
+      - Incurred Cost Submission
+    properties:
+      - type: Authentication
+        url: authentication/defense-contract-audit-agency-authentication.yml
+      - type: OAuthScopes
+        url: scopes/defense-contract-audit-agency-scopes.yml
+      - type: Login
+        url: https://csp.dcaa.mil/
+      - type: Documentation
+        url: https://www.dcaa.mil/Portals/88/Contractor%20Submission%20Portal%20Instructions%20May%202024.pdf
 common:
   - type: DomainSecurity
     url: security/defense-contract-audit-agency-domain-security.yml
+  - type: Authentication
+    url: authentication/defense-contract-audit-agency-authentication.yml
+  - type: OAuthScopes
+    url: scopes/defense-contract-audit-agency-scopes.yml
+  - type: Conventions
+    url: conventions/defense-contract-audit-agency-conventions.yml
+  - type: ErrorCatalog
+    url: errors/defense-contract-audit-agency-problem-types.yml
+  - type: Conformance
+    url: conformance/defense-contract-audit-agency-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/defense-contract-audit-agency-lifecycle.yml
+  - type: RateLimits
+    url: rate-limits/defense-contract-audit-agency-rate-limits.yml
+  - type: Plans
+    url: plans/defense-contract-audit-agency-plans-pricing.yml
+  - type: LLMsTxt
+    url: llms/defense-contract-audit-agency-llms.txt
   - type: LinkedIn
     url: https://www.linkedin.com/company/defense-contract-audit-agency
   - type: Website
@@ -68,6 +176,15 @@ common:
     url: https://www.dcaa.mil/Guidance/
   - type: Contact
     url: https://www.dcaa.mil/Contact/
+  - type: Support
+    url: https://www.dcaa.mil/Contact/Contact-Form/
+  - type: PrivacyPolicy
+    url: https://www.dcaa.mil/Privacy-and-Security/
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-09-07'
+  status: enriched
+  artifacts_added: 10
+  pass: local-v3

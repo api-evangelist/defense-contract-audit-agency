@@ -1,0 +1,51 @@
+generated: '2026-09-07'
+method: probed
+source: >-
+  https://fao.dcaa.mil/api/angularconfiguration/get-info-box-message (HTTP 200,
+  2026-09-07) and live probes of the DCAA hosts.
+note: >-
+  DCAA publishes no versioning policy, no deprecation policy, no SLA and no status page.
+  The one lifecycle signal it emits is in-band: the Branch Locator API's own info-box
+  endpoint carries a host-migration notice. No StatusPage and no Deprecation pointer is
+  emitted, because neither surface exists.
+versioning:
+  scheme: none
+  current: null
+  docs: null
+  detail: Paths are unversioned (/api/<controller>/<action>).
+deprecation:
+  policy_url: null
+  sunset_header: false
+  detail: No RFC 8594 Sunset or Deprecation header was returned on any observed response.
+sla:
+  url: null
+  uptime_target: null
+status_page: null
+migrations:
+  - what: Branch Locator host move
+    from: https://fao.dcaa.mil
+    to: https://locator.dcaa.mil
+    announced_effective: '2025-12-16'
+    channel: >-
+      in-band, via GET /api/angularconfiguration/get-info-box-message on the API itself
+    verbatim_notice: >-
+      IMPORTANT! Website Address Change Coming! Heads up! We're moving to a new web
+      address. Please update your bookmarks and links from https://fao.dcaa.mil to our new
+      address: https://locator.dcaa.mil. This change will take effect on December 16, 2025.
+      Don't get left behind!
+    status_2026_09_07: >-
+      NOT COMPLETE. locator.dcaa.mil does not resolve in DNS (NXDOMAIN, checked 2026-09-07,
+      DISA nameservers), and fao.dcaa.mil is still serving both the app and the API. The
+      announced date has passed by nine months. The notice is also currently suppressed in
+      the UI — get-is-info-box-enabled returns false — so a consumer who does not call the
+      message endpoint directly never sees it.
+    evidence:
+      - url: https://fao.dcaa.mil/api/angularconfiguration/get-info-box-message
+        status: 200
+      - url: https://fao.dcaa.mil/api/angularconfiguration/get-is-info-box-enabled
+        status: 200
+        body: 'false'
+      - url: https://locator.dcaa.mil/
+        status: 0
+        note: DNS resolution failed (NXDOMAIN)
+deprecated_operations: []

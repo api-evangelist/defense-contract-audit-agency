@@ -1,0 +1,101 @@
+generated: '2026-09-07'
+method: probed
+source: >-
+  live probes of https://fao.dcaa.mil/api and https://csp.dcaa.mil/, 2026-09-07. DCAA
+  publishes no API documentation, so nothing here is quoted from a docs page — every
+  convention below was read off an actual request/response.
+note: >-
+  DCAA has no published API conventions. This artifact records the semantics that are
+  observable on its one public JSON surface, the Field Audit Office Branch Locator API,
+  so an agent calling it knows what to expect. Absence of a convention is recorded as
+  absent, not assumed.
+surfaces:
+  - name: Branch Locator API
+    base: https://fao.dcaa.mil/api
+    access: public, unauthenticated
+    read_only: true
+  - name: Contractor Submission Portal
+    base: https://csp.dcaa.mil/
+    access: gated — OIDC sign-in against DoD PIEE
+    read_only: false
+    note: Write surface exists but is behind a DoD account; no machine contract is published for it.
+authentication:
+  style: none on the public surface
+  detail: See authentication/defense-contract-audit-agency-authentication.yml
+idempotency:
+  supported: false
+  coverage: na
+  scope: []
+  header: null
+  detail: >-
+    The public surface is read-only — every observed operation is a GET with no side
+    effects, so there is nothing to replay-protect. The gated CSP write surface publishes
+    no contract, so no idempotency claim can be made about it either. `na` rather than
+    `none`: this is a provider with no public write surface, not one that ships writes
+    without replay protection.
+reversibility:
+  grade: na
+  detail: >-
+    No public write operation exists, so there is no action to reverse. The gated CSP
+    portal does allow a contractor to update or withdraw a previously submitted incurred
+    cost proposal, but that is a human workflow behind a DoD login with no published
+    operation, window, or contract — no window is asserted here because DCAA states none.
+  operations: []
+dry_run_mode:
+  supported: false
+  coverage: na
+  detail: Read-only public surface; nothing to rehearse.
+pagination:
+  supported: false
+  style: none
+  detail: >-
+    /api/PublicBranch/search returns the complete match set inline under
+    branchInfo.branches. No page, offset, cursor or limit parameter was accepted or
+    returned in any observed response.
+filtering:
+  parameters:
+    - name: searchCriteria
+      required: true
+      description: The CAGE code, UEI or ZIP code to look up.
+    - name: searchType
+      required: true
+      description: 0 = CAGE code, 1 = UEI, 2 = ZIP code. Any other value returns RFC 9457 validation problem details.
+      enum_observed: [0, 1, 2]
+field_expansion:
+  supported: false
+metadata:
+  supported: false
+request_tracing:
+  header: null
+  body_field: traceId
+  detail: >-
+    RFC 9457 problem responses carry a W3C trace-context traceId in the body
+    (e.g. 00-6e20c8c9eae90083529b0583a9501742-13607d6fb7e111db-00). No request-id response
+    header was observed on success responses.
+versioning:
+  scheme: none
+  detail: >-
+    No version segment, header or date pin. The path is /api/<controller>/<action> with no
+    version. A host migration was announced in-band (see lifecycle/).
+error_envelope:
+  detail: Two shapes — see errors/defense-contract-audit-agency-problem-types.yml
+  rfc9457: true
+rate_limit_signaling:
+  headers: []
+  detail: >-
+    No X-RateLimit-*, RateLimit-* or Retry-After header appeared on any observed response.
+    See rate-limits/defense-contract-audit-agency-rate-limits.yml
+content_negotiation:
+  response_content_type: application/json; charset=utf-8
+  detail: >-
+    OPTIONS on /api/PublicBranch/search returns 404 — no CORS preflight support was
+    observed, and no Access-Control-* headers were returned.
+transport_security:
+  hsts: true
+  hsts_max_age: 31557600
+  include_subdomains: true
+cross_links:
+  errors: errors/defense-contract-audit-agency-problem-types.yml
+  authentication: authentication/defense-contract-audit-agency-authentication.yml
+  lifecycle: lifecycle/defense-contract-audit-agency-lifecycle.yml
+  rate_limits: rate-limits/defense-contract-audit-agency-rate-limits.yml

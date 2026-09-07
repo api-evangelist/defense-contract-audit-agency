@@ -1,0 +1,73 @@
+generated: '2026-09-07'
+method: probed
+source: live probes of https://fao.dcaa.mil/api and https://csp.dcaa.mil/, 2026-09-07
+note: >-
+  Derived from observed wire behaviour only — DCAA makes no conformance claim anywhere.
+  No Compliance pointer is emitted: DCAA publishes no certification or compliance program
+  page for its web surfaces (it is a federal audit agency operating inside DoD assurance
+  processes, which is not the same thing as a published trust posture).
+standards:
+  - id: rfc9457-problem-details
+    conforms: true
+    evidence: >-
+      GET https://fao.dcaa.mil/api/PublicBranch/search returns
+      Content-Type: application/problem+json with type/title/status/errors — ASP.NET Core
+      ValidationProblemDetails. Observed 2026-09-07, HTTP 400.
+  - id: oauth2
+    conforms: true
+    evidence: >-
+      csp.dcaa.mil 302s to https://piee.eb.mil/portal/oauth2/authorize with
+      response_type=code. Authorization server is DoD PIEE, not DCAA.
+  - id: oauth2-pkce-rfc7636
+    conforms: true
+    evidence: The same authorization request carries code_challenge_method=S256.
+  - id: oidc
+    conforms: true
+    evidence: scope=openid profile on the csp.dcaa.mil authorization request.
+  - id: oidc-discovery
+    conforms: false
+    evidence: >-
+      No /.well-known/openid-configuration is served by any DCAA host, and piee.eb.mil
+      (the authorization server) 404s it too.
+  - id: rfc8615-well-known
+    conforms: false
+    evidence: See well-known/defense-contract-audit-agency-well-known.yml — hit_count 0.
+  - id: rfc9116-security-txt
+    conforms: false
+    evidence: /.well-known/security.txt 404 on fao.dcaa.mil and csp.dcaa.mil; archived 404 on www.dcaa.mil.
+  - id: openapi
+    conforms: false
+    evidence: >-
+      No OpenAPI/Swagger document at any probed location on any DCAA host
+      (/openapi.json, /swagger/v1/swagger.json, /api-docs all 404 on fao.dcaa.mil).
+  - id: hsts-rfc6797
+    conforms: true
+    evidence: 'Strict-Transport-Security: max-age=31557600; includeSubDomains on fao.dcaa.mil and csp.dcaa.mil.'
+  - id: rfc8594-sunset-header
+    conforms: false
+    evidence: No Sunset or Deprecation header observed, despite an announced host migration.
+  - id: pagination
+    conforms: false
+    evidence: Search returns the full result set inline; no page/cursor/limit parameters.
+  - id: idempotency
+    conforms: false
+    evidence: Read-only public surface; no idempotency key mechanism (na, not a failure).
+domain_standards:
+  - id: cage-code
+    conforms: true
+    evidence: >-
+      The API publishes the CAGE code format it accepts at
+      /api/angularconfiguration/get-cage-code-regex ("^\\w{5}$") and takes CAGE code as
+      searchType 0 — the NATO/DLA Commercial and Government Entity code, the identifier
+      scheme US defense contracting runs on.
+  - id: sam-uei
+    conforms: true
+    evidence: >-
+      /api/angularconfiguration/get-uei-regex publishes
+      "^[1-9A-HJ-NP-Z][\\dA-HJ-NP-Z]{11}$" — the SAM.gov 12-character Unique Entity
+      Identifier that replaced DUNS across federal awards — and searchType 1 resolves a
+      field audit office by UEI.
+    note: >-
+      This is the domain-standard signature that matters for a defense-contract-audit
+      surface: an integrator who already speaks CAGE/UEI needs no bespoke mapping to find
+      the cognizant DCAA office for a contractor.

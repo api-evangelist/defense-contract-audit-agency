@@ -3,8 +3,13 @@ specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
 provider: Defense Contract Audit Agency
 providerId: defense-contract-audit-agency
+generated: '2026-09-07'
+method: searched
+source: >-
+  https://fao.dcaa.mil/ and https://www.dcaa.mil/ — searched 2026-09-07 for any pricing,
+  plans, quota or subscription page. None exists.
 created: '2026-05-22'
-modified: '2026-05-22'
+modified: '2026-09-07'
 tags:
 - Federal Government
 - Defense
@@ -12,40 +17,23 @@ tags:
 - Audit
 - Contract Audit
 - Financial
-description: Machine-readable plans scaffold for the Defense Contract Audit Agency API surface. Conforms to the API Commons
-  Plans schema. Tier limits and prices are scaffold defaults; replace with provider-published values.
-plans:
-- id: defense-contract-audit-agency-free
-  name: Free
-  type: freemium
-  description: Free entry tier for the Defense Contract Audit Agency API surface. Intended for evaluation, prototyping, and
-    low-volume integrations. Real limits and pricing must be reconciled with the provider's published plan documentation.
-  entries:
-  - label: API Requests
-    description: Monthly API request quota across all included endpoints
-    name: api_requests
-    type: quota
-    metric: requests
-    limit: 1000
-    timeFrame: month
-    geo: global
-    domains:
-    - https://defense-contract-audit-agency.example/api
-    unit: 1
-    price: '0.00'
-    userMultiplied: false
-  - label: Rate Limit
-    description: Maximum requests per minute on the free tier
-    name: rate_limit
-    type: rate
-    metric: requests_per_minute
-    limit: 10
-    timeFrame: minute
-    geo: global
-    domains:
-    - https://defense-contract-audit-agency.example/api
-    unit: 1
-    price: '0.00'
+description: >-
+  DCAA publishes no API plans and no pricing of any kind. It is a US Department of Defense
+  audit agency, not a commercial API provider. Its one public JSON surface — the Field
+  Audit Office Branch Locator API at https://fao.dcaa.mil/api — is free, anonymous and
+  unmetered, with no sign-up, no key issuance and no tier structure. Its gated Contractor
+  Submission Portal is reached with a DoD PIEE account, which is issued through DoD
+  identity processes and is likewise not sold. plan_count is 0 as a measured fact, not as
+  a placeholder.
+plan_count: 0
+plans: []
+notes:
+- >-
+  This file previously carried a scaffold with invented Free/Pro tiers, invented request
+  quotas and an invented domain (defense-contract-audit-agency.example). Those values were
+  never published by DCAA and have been removed.
 references:
-- name: Defense Contract Audit Agency API Documentation
-  url: https://raw.githubusercontent.com/api-evangelist/defense-contract-audit-agency/refs/heads/main/apis.yml
+- name: DCAA Field Audit Office Branch Locator
+  url: https://fao.dcaa.mil/
+- name: DCAA public website
+  url: https://www.dcaa.mil

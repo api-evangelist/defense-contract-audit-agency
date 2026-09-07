@@ -1,0 +1,60 @@
+generated: '2026-09-07'
+method: probed
+source: >-
+  live HTTP probes 2026-09-07 of https://fao.dcaa.mil/api and https://csp.dcaa.mil/ —
+  DCAA publishes no OpenAPI, so there are no securitySchemes to derive from; every field
+  below was observed on the wire.
+note: >-
+  Two distinct DCAA surfaces with two distinct auth models. The public Branch Locator API
+  is anonymous. The Contractor Submission Portal is federated to DoD PIEE over OpenID
+  Connect. There is no developer-facing authentication documentation of any kind — no API
+  keys, no client registration, no token endpoint DCAA operates itself.
+summary:
+  types: [none, openIdConnect]
+  api_key_in: []
+  oauth2_flows: [authorizationCode]
+schemes:
+  - name: anonymous
+    type: none
+    applies_to: https://fao.dcaa.mil/api
+    description: >-
+      The DCAA Field Audit Office Branch Locator API answers unauthenticated GET requests.
+      No Authorization header, API key, cookie or referer check was required for any of the
+      six observed operations; responses carry only Strict-Transport-Security.
+    evidence:
+      - url: https://fao.dcaa.mil/api/angularconfiguration/get-uei-regex
+        status: 200
+        observed: '2026-09-07'
+      - url: https://fao.dcaa.mil/api/PublicBranch/search?searchCriteria=22060&searchType=2
+        status: 200
+        observed: '2026-09-07'
+  - name: piee-oidc
+    type: openIdConnect
+    applies_to: https://csp.dcaa.mil/
+    description: >-
+      The DCAA Contractor Submission Portal (CSP) delegates sign-in to the DoD Procurement
+      Integrated Enterprise Environment (PIEE). An unauthenticated request to any CSP path
+      returns 302 to the PIEE authorization endpoint with the OAuth 2.0 authorization-code
+      flow and PKCE (S256). DCAA operates the relying party; PIEE operates the
+      authorization server. Credentials are DoD PIEE accounts (CAC/ECA), not developer keys.
+    flows:
+      - flow: authorizationCode
+        authorizationUrl: https://piee.eb.mil/portal/oauth2/authorize
+        tokenUrl: null
+        pkce: S256
+        client_id: csp
+        redirect_uri: https://csp.dcaa.mil/signin-oidc
+        scopes: [openid, profile]
+    authorization_server:
+      host: piee.eb.mil
+      operator: DoD Procurement Integrated Enterprise Environment (PIEE)
+      first_party: false
+      discovery_document: >-
+        none served — /.well-known/openid-configuration and
+        /.well-known/oauth-authorization-server both returned 404 on piee.eb.mil (2026-09-07)
+    evidence:
+      - url: https://csp.dcaa.mil/
+        status: 302
+        redirect_to: https://piee.eb.mil/portal/oauth2/authorize?client_id=csp&redirect_uri=https%3A%2F%2Fcsp.dcaa.mil%2Fsignin-oidc&response_type=code&scope=openid%20profile&code_challenge_method=S256
+        observed: '2026-09-07'
+docs: null

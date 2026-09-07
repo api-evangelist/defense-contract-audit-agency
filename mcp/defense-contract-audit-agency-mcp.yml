@@ -1,0 +1,54 @@
+generated: '2026-09-07'
+method: derived
+status: candidate
+source: >-
+  live probes of https://fao.dcaa.mil/api, 2026-09-07. No MCP server exists; the tools
+  below are a candidate shape derived from the six operations observed on DCAA's one public
+  JSON surface.
+note: >-
+  DCAA publishes no MCP server, hosted or local. Searched the docs surface, npm and the MCP
+  registries and found nothing. No MCPServer pointer is emitted in apis.yml — this file
+  records a candidate, and advertising it as a server would credit DCAA with an agent
+  surface it does not operate. The tool input schemas below are read from observed request
+  parameters, not from an OpenAPI, because DCAA publishes none.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: none
+  verified: derived
+server:
+  name: dcaa-branch-locator
+  transport: null
+  url: null
+tools:
+  - name: find_field_audit_office
+    description: >-
+      Find the cognizant DCAA field audit office for a contractor, by CAGE code, SAM.gov
+      UEI, or ZIP code.
+    source_operation: probed GET https://fao.dcaa.mil/api/PublicBranch/search
+    input:
+      searchCriteria:
+        type: string
+        required: true
+      searchType:
+        type: integer
+        required: true
+        enum: [0, 1, 2]
+        description: 0 = CAGE code, 1 = UEI, 2 = ZIP code
+  - name: get_cage_code_format
+    description: Return the regex the locator uses to validate a CAGE code.
+    source_operation: probed GET https://fao.dcaa.mil/api/angularconfiguration/get-cage-code-regex
+  - name: get_uei_format
+    description: Return the regex the locator uses to validate a SAM.gov Unique Entity Identifier.
+    source_operation: probed GET https://fao.dcaa.mil/api/angularconfiguration/get-uei-regex
+  - name: get_zip_code_format
+    description: Return the regex the locator uses to validate a US ZIP code.
+    source_operation: probed GET https://fao.dcaa.mil/api/angularconfiguration/get-zip-code-regex
+  - name: get_service_notice
+    description: Return the current service/migration notice text the locator publishes.
+    source_operation: probed GET https://fao.dcaa.mil/api/angularconfiguration/get-info-box-message
+  - name: is_service_notice_enabled
+    description: Whether the locator is currently displaying its service notice.
+    source_operation: probed GET https://fao.dcaa.mil/api/angularconfiguration/get-is-info-box-enabled

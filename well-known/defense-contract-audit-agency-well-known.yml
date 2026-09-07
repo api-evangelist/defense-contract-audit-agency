@@ -1,0 +1,168 @@
+generated: '2026-09-07'
+method: probed
+source: live HTTP probes of every host in this record, 2026-09-07
+note: >-
+  No host DCAA operates served a real /.well-known document. www.dcaa.mil sits behind
+  an Akamai (AkamaiGHost) edge that answers 403 "Access Denied" to every request from
+  this crawler regardless of browser User-Agent, so its well-known surface could not be
+  read live; the Internet Archive's own crawls of the origin record 404 on
+  /.well-known/security.txt (2023-06-01), /.well-known/openid-configuration (2023-07-03)
+  and /.well-known/ai-plugin.json (2023-06-01), so the surface is absent rather than
+  merely unreadable. fao.dcaa.mil (the public Branch Locator API host) and csp.dcaa.mil
+  (the Contractor Submission Portal) both 404 every path. NO WellKnown and NO SecurityTxt
+  pointer is emitted — this file records an absence, not a presence.
+hit_count: 0
+path_echo_control: passed
+hosts:
+  - host: https://www.dcaa.mil
+    note: >-
+      Akamai edge returns 403 to this crawler on every path including the negative
+      control, so these statuses measure the edge, not the origin.
+    documents:
+      - path: /.well-known/security.txt
+        status: 403
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 403
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 403
+        file: null
+      - path: /.well-known/oauth-protected-resource
+        status: 403
+        file: null
+      - path: /.well-known/api-catalog
+        status: 403
+        file: null
+      - path: /.well-known/ai-plugin.json
+        status: 403
+        file: null
+      - path: /.well-known/aauth-resource.json
+        status: 403
+        file: null
+      - path: /.well-known/ucp.json
+        status: 403
+        file: null
+      - path: /.well-known/acp.json
+        status: 403
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 403
+        file: null
+      - path: /.well-known/agent.json
+        status: 403
+        file: null
+      - path: /.well-known/apis.json
+        status: 403
+        file: null
+      - path: /apis.json
+        status: 403
+        file: null
+      - path: /apis.yml
+        status: 403
+        file: null
+      - path: /.well-known/dcaa-negative-control-7f3ab91c.json
+        status: 403
+        file: null
+  - host: https://fao.dcaa.mil
+    note: DCAA Field Audit Office Branch Locator — public Angular SPA plus its JSON API.
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 404
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+        file: null
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+        file: null
+      - path: /.well-known/api-catalog
+        status: 404
+        file: null
+      - path: /.well-known/ai-plugin.json
+        status: 404
+        file: null
+      - path: /.well-known/aauth-resource.json
+        status: 404
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 404
+        file: null
+      - path: /.well-known/agent.json
+        status: 404
+        file: null
+      - path: /.well-known/apis.json
+        status: 404
+        file: null
+      - path: /apis.json
+        status: 404
+        file: null
+      - path: /llms.txt
+        status: 404
+        file: null
+      - path: /.well-known/dcaa-negative-control-7f3ab91c.json
+        status: 404
+        file: null
+  - host: https://csp.dcaa.mil
+    note: >-
+      DCAA Contractor Submission Portal. Unauthenticated requests 302 to
+      https://piee.eb.mil/portal/oauth2/authorize (client_id=csp), so the 302 rows below
+      are the OIDC sign-in redirect, not a served document.
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 302
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 302
+        file: null
+      - path: /.well-known/oauth-protected-resource
+        status: 302
+        file: null
+      - path: /.well-known/api-catalog
+        status: 302
+        file: null
+      - path: /.well-known/ai-plugin.json
+        status: 404
+        file: null
+      - path: /.well-known/aauth-resource.json
+        status: 404
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 404
+        file: null
+      - path: /.well-known/agent.json
+        status: 404
+        file: null
+      - path: /.well-known/apis.json
+        status: 404
+        file: null
+      - path: /apis.json
+        status: 404
+        file: null
+      - path: /llms.txt
+        status: 404
+        file: null
+      - path: /.well-known/dcaa-negative-control-7f3ab91c.json
+        status: 404
+        file: null
+  - host: https://piee.eb.mil
+    note: >-
+      NOT a DCAA host. Probed only because the csp.dcaa.mil sign-in redirect names it as
+      the authorization server for the DCAA CSP client. Operated by DoD PIEE; nothing here
+      counts toward DCAA's well-known posture.
+    documents:
+      - path: /.well-known/openid-configuration
+        status: 404
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+        file: null
+      - path: /portal/.well-known/openid-configuration
+        status: 404
+        file: null

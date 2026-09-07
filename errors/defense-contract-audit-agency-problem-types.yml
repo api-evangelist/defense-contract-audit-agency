@@ -1,0 +1,71 @@
+generated: '2026-09-07'
+method: probed
+source: >-
+  live responses from https://fao.dcaa.mil/api, observed 2026-09-07. DCAA publishes no
+  OpenAPI and no error reference, so every entry below is a response body actually returned
+  on the wire, quoted verbatim.
+format: rfc9457
+note: >-
+  The Branch Locator API returns two different error shapes. Framework-level model-binding
+  and validation failures come back as genuine RFC 9457 problem+json (ASP.NET Core's
+  built-in ValidationProblemDetails, with a traceId). Application-level "no result" and
+  "bad input" outcomes do NOT use problem+json — they return the normal search envelope
+  with a statusCode field carrying the code, at HTTP 404 or HTTP 400. An agent must read
+  both shapes; the content-type is the discriminator.
+envelopes:
+  - name: rfc9457-problem-details
+    content_type: application/problem+json; charset=utf-8
+    fields: [type, title, status, errors, traceId]
+    trace_field: traceId
+  - name: search-result-envelope
+    content_type: application/json; charset=utf-8
+    fields: [title, searchForm, regionInfo, branchInfo, statusCode, notFoundMessage]
+    note: HTTP status mirrors the embedded statusCode field.
+problems:
+  - status: 400
+    type: https://tools.ietf.org/html/rfc9110#section-15.5.1
+    title: One or more validation errors occurred.
+    envelope: rfc9457-problem-details
+    cause: A required query parameter was omitted, or a parameter value was outside its allowed range.
+    example_errors:
+      searchCriteria: The searchCriteria field is required.
+      searchType: The value '3' is invalid.
+    remediation: >-
+      Supply searchCriteria, and a searchType of 0 (CAGE code), 1 (UEI) or 2 (ZIP code).
+    observed:
+      - url: https://fao.dcaa.mil/api/PublicBranch/search
+        status: 400
+      - url: https://fao.dcaa.mil/api/PublicBranch/search?searchCriteria=22060&searchType=3
+        status: 400
+  - status: 400
+    type: null
+    title: Search criteria failed the format check for the selected search type
+    envelope: search-result-envelope
+    cause: >-
+      searchCriteria did not match the regex the API publishes for that searchType
+      (branchSearchError is true in the response).
+    remediation: >-
+      Validate input first against /api/angularconfiguration/get-cage-code-regex,
+      get-uei-regex or get-zip-code-regex.
+    observed:
+      - url: https://fao.dcaa.mil/api/PublicBranch/search?searchCriteria=22060&searchType=1
+        status: 400
+  - status: 404
+    type: null
+    title: No field audit office matched the search criteria
+    envelope: search-result-envelope
+    cause: The criteria were well formed but no branch is mapped to them (noBranchesFound is true).
+    remediation: Broaden the search or try a different searchType.
+    observed:
+      - url: https://fao.dcaa.mil/api/PublicBranch/search?searchCriteria=90245&searchType=0
+        status: 404
+  - status: 404
+    type: null
+    title: Unknown route
+    envelope: html
+    cause: >-
+      The host is an Angular SPA; unrecognised paths return the 1,303-byte index.html shell
+      with HTTP 404. A JSON client must not treat a 404 body as an error document.
+    observed:
+      - url: https://fao.dcaa.mil/api
+        status: 404
