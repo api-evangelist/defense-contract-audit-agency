@@ -92,7 +92,7 @@ apis:
       - Locator
       - Government Contracting
       - CAGE Code
-      - Unique Entity Identifier
+      - SAM.gov UEI
       - Undocumented
     tags_raw:
       - Locator
@@ -130,7 +130,7 @@ apis:
       - Gated
       - Authentication
       - OpenID Connect
-      - Incurred Cost
+      - Incurred Cost Submission
     tags_raw:
       - Gated
       - Authentication
