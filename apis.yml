@@ -46,12 +46,12 @@ position: Producing
 specificationVersion: '0.23'
 kind: government
 tags:
-  - Federal-Government
+  - Federal Government
   - Defense
   - Department of Defense
   - Audit
   - Contract Audit
-  - Financial
+  - Finance
   - Government Contracting
   - CAGE Code
   - Unique Entity Identifier
@@ -67,6 +67,7 @@ tags_raw:
   - CAGE Code
   - Unique Entity Identifier
   - Locator
+  - Federal-Government
 created: '2024-12-03'
 modified: '2026-09-07'
 apis:
