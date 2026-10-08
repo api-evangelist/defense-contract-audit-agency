@@ -147,6 +147,8 @@ apis:
       - type: Documentation
         url: https://www.dcaa.mil/Portals/88/Contractor%20Submission%20Portal%20Instructions%20May%202024.pdf
 common:
+  - type: FinOps
+    url: finops/defense-contract-audit-agency-finops.yml
   - type: DomainSecurity
     url: security/defense-contract-audit-agency-domain-security.yml
   - type: Authentication
