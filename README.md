@@ -1,4 +1,4 @@
-# Defense Contract Audit Agency (defense-contract-audit-agency)
+# Defense Contract Audit Agency
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,39 +64,123 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-The Defense Contract Audit Agency (DCAA), under the authority, direction, and control of the Under Secretary of Defense (Comptroller), provides audit and financial advisory services to Department of Defense and other federal entities responsible for acquisition and contract administration. DCAA publishes guidance, audit programs, and reports through its website but does not currently expose a public developer API.
+The Defense Contract Audit Agency (DCAA), under the authority, direction, and control of the Under Secretary of Defense (Comptroller), provides audit and financial advisory services to the Department of Defense and other federal entities responsible for acquisition and contract administration. DCAA runs no developer program: no API documentation, no OpenAPI, no SDK, no MCP server, no agent card and no /.well-known surface exist on any host it operates. It does serve one public, unauthenticated and undocumented JSON API — the Field Audit Office Branch Locator at https://fao.dcaa.mil/api — which resolves the cognizant DCAA audit office for a contractor by CAGE code, SAM.gov UEI or ZIP code and returns RFC 9457 problem details on validation failure. A second, gated surface, the Contractor Submission Portal at https://csp.dcaa.mil, takes certified incurred cost submissions behind an OpenID Connect sign-in federated to DoD PIEE.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/defense-contract-audit-agency/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/defense-contract-audit-agency/refs/heads/main/apis.yml)
+**Areas:** Federal Government · Defense · Department of Defense · Audit · Contract Audit · Finance · Government Contracting · CAGE Code · Unique Entity Identifier · Locator
 
-## Scope
+## Defense Contract Audit Agency on APIs.io
 
-- **Type:** Index
-- **Position:** Consuming
-- **Access:** 3rd-Party
+Everything profiled for Defense Contract Audit Agency is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/defense-contract-audit-agency/](https://apis.io/providers/defense-contract-audit-agency/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (2)
 
-- Federal Government
-- Defense
-- Department of Defense
-- Audit
-- Contract Audit
-- Financial
+- [DCAA Field Audit Office Branch Locator API](https://apis.io/apis/defense-contract-audit-agency/branch-locator/) — The public JSON backend of DCAA's Field Audit Office Branch Locator. It resolves the DCAA field audit office cognizant over a contractor from a CAGE code…
+- [DCAA Contractor Submission Portal (CSP)](https://apis.io/apis/defense-contract-audit-agency/contractor-submission-portal/) — The portal a defense contractor uses to file, update or withdraw a certified incurred cost submission with DCAA. It is a DCAA-operated application on a DCAA…
 
-## Timestamps
+### Published properties
 
-- **Created:** 2024-12-03
-- **Modified:** 2026-04-28
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## Common Properties
+#### MCP servers (1)
 
-- [LinkedIn](https://www.linkedin.com/company/defense-contract-audit-agency)
+Model Context Protocol servers that expose the API to agents.
+
+- [dcaa-branch-locator](https://apis.io/servers/defense-contract-audit-agency/dcaa-branch-locator/)
+
+#### Collections (1)
+
+Postman and Open Collection request collections.
+
+- [API Collection](https://apis.io/collections/defense-contract-audit-agency/open-defense-contract-audit-agency/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Defense Contract Audit Agency Authentication](https://apis.io/security/defense-contract-audit-agency/defense-contract-audit-agency-authentication/)
+- [Defense Contract Audit Agency Domain Security](https://apis.io/security/defense-contract-audit-agency/defense-contract-audit-agency-domain-security/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Defense Contract Audit Agency Scopes](https://apis.io/scopes/defense-contract-audit-agency/defense-contract-audit-agency-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Defense Contract Audit Agency Plans Pricing](https://apis.io/plans/defense-contract-audit-agency/defense-contract-audit-agency-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Defense Contract Audit Agency Rate Limits](https://apis.io/rate-limits/defense-contract-audit-agency/defense-contract-audit-agency-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Defense Contract Audit Agency Finops](https://apis.io/finops/defense-contract-audit-agency/defense-contract-audit-agency-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
 - [Website](https://www.dcaa.mil)
-- [About](https://www.dcaa.mil/About/)
-- [Publications](https://www.dcaa.mil/Guidance/)
-- [Contact](https://www.dcaa.mil/Contact/)
+- [Support](https://www.dcaa.mil/Contact/Contact-Form/)
+- [Privacy policy](https://www.dcaa.mil/Privacy-and-Security/)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 20.7** — emerging · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 0.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 0.0 |
+| Developer ergonomics | 26.2 |
+| Access clarity | 17.1 |
+
+**Agent readiness 7.9** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 30.4** — Government & Public Sector
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/defense-contract-audit-agency/](https://apis.io/providers/defense-contract-audit-agency/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Defense Contract Audit Agency: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/defense-contract-audit-agency/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
